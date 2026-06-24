@@ -154,4 +154,27 @@ describe('DOMAIN_CONFIG', () => {
 
         process.env.APP_ENV = originalAppEnv;
     });
+
+    it('returns EnifiHub OAuth config and handles redirect URI for live domain', () => {
+        const enifihubConfig = getDomainConfigForHost('enifihub.vercel.app');
+
+        expect(enifihubConfig).toMatchObject({
+            clientId: '33E4RZUuQNAdTIRfsPZRE',
+            appId: '113555',
+            redirectUri: 'https://enifihub.vercel.app/',
+            botsFolder: 'enifihub.vercel.app',
+            includeLegacyAppIdInOAuth: true,
+            useLegacyOAuthLogin: false,
+            ui: {
+                brandName: 'Enifi Hub',
+            },
+            features: {
+                autoTrades: true,
+                manualTrading: true,
+            },
+        });
+
+        const wwwConfig = getDomainConfigForHost('www.enifihub.vercel.app');
+        expect(wwwConfig).toEqual(enifihubConfig);
+    });
 });

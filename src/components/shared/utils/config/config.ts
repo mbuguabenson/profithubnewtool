@@ -1,5 +1,3 @@
-import { DerivWSAccountsService } from '@/services/derivws-accounts.service';
-import { OAuthTokenExchangeService } from '@/services/oauth-token-exchange.service';
 import { getPendingApiToken } from '@/utils/api-token-permissions';
 import brandConfig from '../../../../../brand.config.json';
 
@@ -306,7 +304,7 @@ export const getDomainConfig = (): DomainConfig => {
     return {
         clientId: process.env.CLIENT_ID || '',
         appId: process.env.APP_ID || '71937',
-        redirectUri: process.env.REDIRECT_URI || window.location.origin,
+        redirectUri: process.env.REDIRECT_URI || `${window.location.origin}/`,
         botsFolder: process.env.BOTS_FOLDER || DEFAULT_BOTS_FOLDER,
         includeLegacyAppIdInOAuth: true,
         useLegacyOAuthLogin: false,
@@ -458,6 +456,9 @@ const getLegacyServerURL = () => {
  */
 export const getSocketURL = async (): Promise<string> => {
     try {
+        const { OAuthTokenExchangeService } = await import('@/services/oauth-token-exchange.service');
+        const { DerivWSAccountsService } = await import('@/services/derivws-accounts.service');
+
         // Check PKCE OAuth first (new platform users)
         const authInfo = OAuthTokenExchangeService.getAuthInfo();
         if (authInfo?.access_token) {
