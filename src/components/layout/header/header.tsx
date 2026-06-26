@@ -302,6 +302,8 @@ const AppHeader = observer(() => {
                     <textarea
                         id='api-token-login-input'
                         className='api-token-login__input'
+                        title={localize('API token')}
+                        placeholder={localize('Enter your API token')}
                         value={apiToken}
                         onChange={event => {
                             setApiToken(event.target.value);
