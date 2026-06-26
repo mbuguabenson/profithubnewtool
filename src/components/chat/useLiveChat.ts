@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 // Updated import path - Growthbook removed, using stub implementation
-import useRemoteConfig from '@/hooks/remote-config/useRemoteConfig';
-import { URLUtils } from '@deriv-com/utils';
-
+import useRemoteConfig from '../../hooks/remote-config/useRemoteConfig';
 type TLiveChatClientInformation = {
     is_client_store_initialized: boolean;
     is_logged_in: boolean;
@@ -20,7 +18,7 @@ const useLiveChat = (client_information: TLiveChatClientInformation) => {
         is_client_store_initialized,
         currency = ' ',
         email = ' ',
-        is_logged_in = ' ',
+        is_logged_in = false,
         loginid = ' ',
         residence = ' ',
         last_name = ' ',
@@ -29,11 +27,11 @@ const useLiveChat = (client_information: TLiveChatClientInformation) => {
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
-    const reset_password = URLUtils.getQueryParameter('action') === 'reset_password';
-    const should_disable_livechat = url_params.get('code') && reset_password;
+    const reset_password = url_params.get('action') === 'reset_password';
+    const should_disable_livechat = !!url_params.get('code') && reset_password;
 
     const { data } = useRemoteConfig(true);
-    const { cs_chat_livechat } = data;
+    const { cs_chat_livechat } = data ?? {};
 
     useEffect(() => {
         if (is_client_store_initialized && cs_chat_livechat) {
@@ -48,7 +46,9 @@ const useLiveChat = (client_information: TLiveChatClientInformation) => {
                 if (data.state.visibility === 'minimized') {
                     window.LiveChatWidget?.call('hide');
                 }
-                const utm_data = JSON.parse(Cookies.get('utm_data') || '{}');
+                const utm_data = JSON.parse(
+                    Cookies.get('utm_data') || '{}'
+                );
                 const { utm_source, utm_medium, utm_campaign } = utm_data;
 
                 const session_variables = {

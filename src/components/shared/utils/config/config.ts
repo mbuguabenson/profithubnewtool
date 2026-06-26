@@ -285,6 +285,22 @@ export const DOMAIN_CONFIG: Record<string, DomainConfig> = {
             brandName: 'Enifi Hub',
         },
     }),
+    ...createHostedDomainEntries({
+        primaryDomain: 'profithubnew.vercel.app',
+        aliases: ['www.profithubnew.vercel.app'],
+        clientId: '33F8QpP6JKuOzvEecwHPJ',
+        appId: '71937',
+        redirectUri: 'https://profithubnew.vercel.app/callback',
+        botsFolder: 'profithubnew.vercel.app',
+        includeLegacyAppIdInOAuth: true,
+        features: {
+            autoTrades: true,
+            manualTrading: true,
+        },
+        ui: {
+            brandName: 'Profit Hub',
+        },
+    }),
 };
 
 export const getDomainConfigForHost = (hostname: string): DomainConfig | undefined => DOMAIN_CONFIG[hostname];

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import Dialog from '@/components/shared_ui/dialog';
-import Scanner from '@/pages/scanner';
+import Dialog from '../shared_ui/dialog';
+import Scanner from '../../pages/scanner';
 import './floating-scanner.scss';
 
 interface FloatingScannerProps {
